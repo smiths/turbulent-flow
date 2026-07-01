@@ -4,7 +4,7 @@ Developer Names: Phil Du (Software), Nikita Holyev (Theory), Spencer Smith
 
 Date of project start: 2024-01-19
 
-This project is to generate 3D velocity fields consist of synthetic eddies, mimicking turbulent flows, and to be used as initial conditions by turbulent CFD simulations.
+This project is to generate 3D velocity fields consist of synthetic eddies, mimicking turbulent flows, and to be used as initial conditions by turbulent CFD simulations. Further details of the problem, the requirements, the design and verification can be found as part of the [full documentation](https://smiths.github.io/turbulent-flow/).
 
 The folders and files for this project are as follows:
 
