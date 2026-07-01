@@ -1,0 +1,136 @@
+name: Build LaTeX and Deploy PDFs
+
+on:
+  push:
+    branches: main
+    paths: [docs/**]
+  pull_request:
+    branches: main
+    paths: [docs/**]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Get all LaTeX files
+        id: latex-files
+        run: |
+          FILES=$(find docs -name "*.tex")
+          echo "FILES<<EOF" >> $GITHUB_ENV
+          echo "$FILES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+      - name: Install TeX Live
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --fix-missing texlive-latex-extra texlive-science #texlive-xetex texlive-luatex texlive-bibtex-extra 
+      - name: Compile LaTeX
+        run: |
+          PDF_CACHE_DIR="$GITHUB_WORKSPACE/build-pdf"
+          mkdir -p "$PDF_CACHE_DIR"
+
+          while IFS= read -r file; do
+            echo "Processing $file"
+            # Build using existing Makefile rules
+            make -B -f MakeTex "${file%.tex}.pdf"
+              
+            # Copy result into build-pdf, preserving structure
+            rel=$(dirname "$file" | cut -d'/' -f2-)
+            mkdir -p "$PDF_CACHE_DIR/$rel"
+            cp "${file%.tex}.pdf" "$PDF_CACHE_DIR/$rel/"
+          done <<< "$FILES"
+        #continue-on-error: true # Job continues even if this step fails
+      - name: Prepare site
+        run: |
+          #set -euo pipefail
+          set +e
+
+          # Always start from repo root
+          pwd
+          ls
+
+          # Recreate public directory
+          rm -rf public
+          mkdir -p public          
+          
+          # Copy PDFs preserving structure
+          rsync -av build-pdf/ public/
+          
+          # Generate PDF list (paths relative to site root) - OLD
+          #PDF_LIST=$(find public -name "*.pdf" | sort | sed 's|^public/||' | awk -F/ '
+          #{
+          #  dir = $1
+          #  file = $NF
+          #  groups[dir] = groups[dir] "<li><a href=\"" $0 "\">" file "</a></li>\n"
+          #}
+          #END {
+          #  for (dir in groups) {
+          #    printf "<h2>%s</h2>\n<ul>\n%s</ul>\n", dir, groups[dir]
+          #  }
+          #}')
+
+          # Generate ordered list of PDFs
+          PDFS=$(
+            cat site/order.txt
+
+            find public -name "*.pdf" \
+              | sed 's|^public/||' \
+              | grep -vxFf site/order.txt \
+              | sort
+          )
+
+          PDF_LIST=$(echo "$PDFS" | awk -F/ '
+          {
+            dir = $1
+            file = $NF
+
+            if (!(dir in seen)) {
+              dirs[++n] = dir
+              seen[dir] = 1
+            }
+
+            groups[dir] = groups[dir] "<li><a href=\"" $0 "\">" file "</a></li>\n"
+          }
+          END {
+            for (i = 1; i <= n; i++) {
+              dir = dirs[i]
+              printf "<h2>%s</h2>\n<ul>\n%s</ul>\n", dir, groups[dir]
+           }
+          }')
+
+          # Ensure site template exists
+          test -f site/index.html
+
+          # Build index.html safely
+          awk -v list="$PDF_LIST" '
+            /<!-- PDF_LIST -->/ { print list; next }
+            { print }
+          ' site/index.html > public/index.html
+
+          # Copy static assets
+          cp site/style.css public/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
