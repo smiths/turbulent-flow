@@ -1,6 +1,6 @@
 # Synthetic Eddy for Turbulent Flow Simulation
 
-Developer Names: Phil Du (Software), Nikita Holyev (Theory)
+Developer Names: Phil Du (Software), Nikita Holyev (Theory), Spencer Smith
 
 Date of project start: 2024-01-19
 
