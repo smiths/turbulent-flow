@@ -2,10 +2,10 @@ name: JOSS Draft PDF
 on:
   push:
     branches: main
-    paths: [docs/**]
+    paths: [paper/**]
   pull_request:
     branches: main
-    paths: [docs/**]
+    paths: [paper/**]
   workflow_dispatch:
 
 jobs:
