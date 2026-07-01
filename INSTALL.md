@@ -28,19 +28,13 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 You will likely see some red warnings at this point, but as long as it starts with 
 `Set-ExecutionPolicy : Windows PowerShell updated your execution policy successfully`, you are good to go.
 
-**If you are on Linux**  
-You can initialize conda with
+**If you are on Linux or Mac**  
+You can initialize conda for manual activation with:
 ```bash
 conda init --all
-conda config --set auto_activate_base False # Set to manual activation
+conda config --set auto_activate False
 ```
 Please refer to [official documentation for Linux](https://www.anaconda.com/docs/getting-started/miniconda/install#linux-terminal-installer).
-
-**If you are on MacOS**  
-Then you are a lot richer than me, and I have no idea how conda works on your fancy machine.  
-You make need to adjust the `SHELL` variable in the [`Makefile`](/Makefile) to use `zsh` instead of `bash` for newer MacOS versions.
-
-For details, please refer to [official documentation for MacOS](https://www.anaconda.com/docs/getting-started/miniconda/install#mac-os-graphical-installer).
 
 ### Creating a New Conda Environment
 Assuming you are using VS Code and you have done the steps above correctly...
