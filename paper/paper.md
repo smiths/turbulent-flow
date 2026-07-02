@@ -40,7 +40,7 @@ Compared to widely used RANS models in CFD, LES can capture more intricate detai
 
 Unlike RANS, which can be described by a few parameters, utilizing LES in any practical manner requires a realistic turbulent flow field running in the simulation. To reach such a state, either prior simulations with longer time and larger field for the turbulent flow to develop are needed (more expensive), or a suitable inlet condition must be synthesized using turbulence generation methods [@Wu2017].  @PolettoEtAl2013 proposed one such method by generating synthetic eddies to mimic a turbulent flow. Compared to previous proposals, such as random fluctuations, this method is divergence free and closer to actual turbulent flow.
 
-`SynthEddy` is a Python implementation based on Poletto's method. SynthEddy models turbulent flow fields consisting of synthetic eddies of various sizes, orientations and intensities. This physical system is shown in \autoref{fig:PS}. The user can generate turbulent flow and query the velocity field for both turbulence research and as IC/BC for CFD simulations.
+`SynthEddy` is a Python implementation based on Poletto's method. SynthEddy models turbulent flow fields consisting of synthetic eddies of various sizes, orientations and intensities. This physical system is shown in \autoref{fig:PS}. The user can generate a turbulent velocity field and query it for use in both turbulence research and as an IC/BC for CFD simulations.
 
 ![Physical system\label{fig:PS}](PS.png)
 
@@ -90,7 +90,7 @@ Some of the key documents include:
 - [Module Interface Specification](https://smiths.github.io/turbulent-flow/Design/SoftDetailedDes/MIS.pdf) 
   - The interface provided by each module
   - The MIS follows the approach presented by Hoffman and Strooper [@HoffmanAndStrooper1995] and later adapted for scientific computing software [@SmithAndYu2009; @ElSheikhEtAl2004].
-- [Verification and Validation Plan (VnV Plan)](https://github.com/omltcat/turbulent-flow/blob/main/docs/VnVPlan/VnVPlan.pdf)
+- [Verification and Validation Plan (VnV Plan)](https://smiths.github.io/turbulent-flow/VnVPlan/VnVPlan.pdf)
   - Describes the testing strategy and test cases.
 
 ![Theoretical model example\label{fig:TM}](TM2.png)
@@ -99,7 +99,7 @@ Some of the key documents include:
 
 `SynthEddy` uses continuous integration by GitHub actions to call `pytest` for unit and system testing for every pull request on the main branch.  This ensures that the program is always in a working state throughout the development process.
 
-These tests can also be run locally with instructions in the [README.md](https://github.com/omltcat/turbulent-flow/blob/main/README.md#running-the-test-cases). See [VnV Plan](https://github.com/omltcat/turbulent-flow/blob/main/docs/VnVPlan/VnVPlan.pdf) for more details on the test cases.
+These tests can also be run locally with instructions in the [README.md](https://github.com/smiths/turbulent-flow/blob/main/README.md#running-the-test-cases). See [VnV Plan](https://smiths.github.io/turbulent-flow/VnVPlan/VnVPlan.pdf) for more details on the test cases.
 
 # Research impact statement
 
@@ -118,7 +118,7 @@ SynthEddy is being used by Nikita Holyev as he works toward his PhD [@HolyevEtAl
 
 A quick start guide is provided in the [README.md](https://github.com/smiths/turbulent-flow?tab=readme-ov-file#quick-start) of the repository.
 
-The generated field is fully wrapped around on all boundaries, ensuring conservation of mass. Details on how wrapped around is handled in different flow scenarios can be found in the [Module Guide (MG)](https://github.com/omltcat/turbulent-flow/blob/main/docs/Design/SoftArchitecture/MG.pdf) (see Field Wrap-around section).
+The generated field is fully wrapped around on all boundaries, ensuring conservation of mass. Details on how wrapping is handled in different flow scenarios can be found in the [Module Guide (MG)](https://smiths.github.io/turbulent-flow/Design/SoftArchitecture/MG.pdf) (see Field Wrap-around section).
 
 The query result is saved as a NumPy array (`.npy` file) representing velocity vectors in a 3D meshgrid, with a shape of `(Nx, Ny, Nz, 3)` where `N` is the number of grid points in each direction, and the last dimension represents $x$, $y$, and $z$ components of the velocity vector.
 
@@ -135,7 +135,7 @@ A velocity magnitude cross-section plot example from a $1000^3$ meshgrid is show
 - Eddy shape function.
   A function that describes the velocity distribution of individual eddies.
 
-  Detailed explanation on editing these functions can be found in the [README.md](https://github.com/omltcat/turbulent-flow/blob/main/README.md#customization).
+  Detailed explanation on editing these functions can be found in the [README.md](https://github.com/smiths/turbulent-flow/blob/main/README.md#customization).
 
 ## Typical use case
 
@@ -147,8 +147,8 @@ A velocity magnitude cross-section plot example from a $1000^3$ meshgrid is show
 
 ## Performance and benchmark
 
-To improve performance on large meshgrid, the grid is divided into chunks for efficient batch processing. This is detailed in the [Module Guide (MG)](https://github.com/omltcat/turbulent-flow/blob/main/docs/Design/SoftArchitecture/MG.pdf) (see Chunking section).
-A benchmark test is included in the repository (see [README.md](https://github.com/omltcat/turbulent-flow/blob/main/README.md#running-the-test-cases)).
+To improve performance on large meshgrid, the grid is divided into chunks for efficient batch processing. This is detailed in the [Module Guide (MG)](https://smiths.github.io/turbulent-flow/Design/SoftArchitecture/MG.pdf) (see Chunking section).
+A benchmark test is included in the repository (see [README.md](https://github.com/smiths/turbulent-flow/blob/main/README.md#running-the-test-cases)).
 On an Intel i9-13900K CPU, with a $1000^3$ meshgrid and around 10 million eddies, the run time is approximately 1 hour.
 
 # AI Usage Disclosure
