@@ -82,17 +82,16 @@ Some of the key documents include:
   - Describes the goals, assumptions and requirements of the program.
   - Documents the mathematical models used to build the program, including their relationships and refinements.
     - One such example for a theoretical model is shown in \autoref{fig:TM}.
-- [Verification and Validation Plan (VnV Plan)](https://github.com/omltcat/turbulent-flow/blob/main/docs/VnVPlan/VnVPlan.pdf)
-  - Describes the testing strategy and test cases.
 - [Module Guide (MG)](https://smiths.github.io/turbulent-flow/Design/SoftArchitecture/MG.pdf)
+  - Describes the module architecture of the program.
   - The design of the software is based on the principle of information hiding [@Parnas1972a].  That is, the design is decomposed around likely changes, which become the secrets of the modules.
   - Record key design decisions and rationale.
-  - Describes the module architecture of the program.
   - The module guide, which includes the uses relation between modules, is based on Parnas's ideas for documenting the software architecture [@ParnasAndWeiss2001; @ParnasEtAl1984]. 
 - [Module Interface Specification](https://smiths.github.io/turbulent-flow/Design/SoftDetailedDes/MIS.pdf) 
   - The interface provided by each module
-  - The MIS follows the approach presented by Hoffman and Strooper [@HoffmanAndStrooper1995]
-  - later adapted for scientific computing software [@SmithAndYu2009; @ElSheikhEtAl2004].
+  - The MIS follows the approach presented by Hoffman and Strooper [@HoffmanAndStrooper1995] and later adapted for scientific computing software [@SmithAndYu2009; @ElSheikhEtAl2004].
+- [Verification and Validation Plan (VnV Plan)](https://github.com/omltcat/turbulent-flow/blob/main/docs/VnVPlan/VnVPlan.pdf)
+  - Describes the testing strategy and test cases.
 
 ![Theoretical model example\label{fig:TM}](TM2.png)
 
@@ -104,9 +103,7 @@ These tests can also be run locally with instructions in the [README.md](https:/
 
 # Research impact statement
 
-Used by Nikita.  Cite his conference paper.  
-
-I’m only familiar with Code_Saturne (a CFD software) which was used in DFSEM to generate the synthetic condition. In other words, Code_Saturne has a built-in implementation of DFSEM to generate realistic turbulent fluctuations at the inlet of an LES simulation. (Not sure how computationally cheap it is). I think OpenFOAM also has some built in DFSEM stuff, but not to the extent of my paper.
+SynthEddy is being used by Nikita Holyev as he works toward his PhD [@HolyevEtAl2021].  As far as we know, SynthEddy is the only tool that has focused on only the synthetic turbulence.  There are other open source tools, like [Code_Saturne](https://www.code-saturne.org/) and [OpenFOAM](https://www.openfoam.com/), that have built-in implementations of DFSEM to generate realistic turbulent fluctuations at the inlet of an LES simulation. OpenFOAM has options for digital filter method, divergence-free synthetic turbulence, and random Fourier modes.
 
 # Features and usage
 
