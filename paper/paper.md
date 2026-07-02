@@ -129,6 +129,7 @@ A velocity magnitude cross-section plot example from a $1000^3$ meshgrid is show
 ## Customization
 
 `SynthEddy` allows the user to easily program certain aspects of the generated field to better suit their specific needs. This includes:
+
 - Non-uniform mean velocity distribution.  
   Instead of inputting a constant mean velocity across the field, the user can provide a function to obtain mean $x$-velocity ($\overline{\mathbf{u}}$) based on $y$- and $z$-coordinates. This is useful for simulation of channel flows and boundary layers.
 - Eddy shape function.
