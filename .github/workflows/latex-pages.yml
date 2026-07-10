@@ -22,7 +22,8 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
+    # ubuntu-latest is currently 22.04, but we can use 26.04 because it is faster for LaTeX builds
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5
